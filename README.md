@@ -1,41 +1,94 @@
-# TypeScript Next.js example
+## 0. 概要
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
+Next.jsでのユニットテスト環境を整えます。
+使用するライブラリは`Jest`と`React Testing Library`です。
 
-## Deploy your own
+## 1. まずは作業用のリポジトリを作成
+```bash
+❯ yarn create next-app next-test --example=with-typescript
+```
 
-Deploy the example using [Vercel](https://vercel.com):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/vercel/next.js/tree/canary/examples/with-typescript)
-
-## How to use it?
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+## 2. テスト用のライブラリをインストール
 
 ```bash
-npx create-next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
+> yarn add -D jest @types/jest babel-jest @testing-library/react @testing-library/jest-dom identity-obj-proxy
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/import?filter=next.js&utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## 3. Jestの設定を作成
+2ファイル作成します。
 
-## Notes
+- jest.config.jsの作成
+- .babelrcの作成
 
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
+jest.config.jsの作成
+
+```js
+module.exports = {
+  roots: ['<rootDir>/src'],
+  moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
+  testPathIgnorePatterns: ['<rootDir>[/\\\\](node_modules|.next)[/\\\\]'],
+  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'babel-jest',
+  },
+  moduleNameMapper: {
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
+  },
+  moduleDirectories: ['node_modules', 'src'],
+  setupFilesAfterEnv: [
+    '@testing-library/jest-dom/extend-expect',
+  ],
+};
 
 ```
-npm install --save-dev typescript
+
+`.babelrc`の作成
+
+```.babelrc
+{
+  "presets": ["next/babel"]
+}
+
 ```
 
-To enable TypeScript's features, we install the type declarations for React and Node.
+## 4. サンプルとしてButtonコンポーネントを作成
+
+以下のコミットを参照してください。
+
+https://github.com/hiroshi-kato/next-test/commit/01d8b9a61b856bad11b8139bba24b333a2791763
+
+テストの書き方は以下の記事が大変参考になりました。
+- [React Testing Libraryの使い方 - Qiita](https://qiita.com/ossan-engineer/items/4757d7457fafd44d2d2f)
+- [React Testing Library の使い方 - Adwaysエンジニアブログ](https://blog.engineer.adways.net/entry/2020/06/12/150000)
+
+## 5. 動作確認
+
+`yarn test`でテスト実行。
+
+以下のような実行ログが出ればOK。
 
 ```
-npm install --save-dev @types/react @types/react-dom @types/node
+> yarn run v1.22.10
+$ jest
+ PASS  src/components/Button/index.test.tsx
+  Button
+    Button
+      ✓ should be render button with label (28 ms)
+      ✓ shoud be fired handleClick when button clicked (7 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        1.41 s
+Ran all test suites.
+✨  Done in 2.10s.
 ```
 
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
+以上。
 
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
-
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
+## 6. 参考記事
+- [next.js/examples/with-typescript-eslint-jest at master · vercel/next.js · GitHub](https://github.com/vercel/next.js/tree/master/examples/with-typescript-eslint-jest)
+- [Jest · 🃏 Delightful JavaScript Testing](https://jestjs.io/)
+- [GitHub - testing-library/jest-dom: Custom jest matchers to test the state of the DOM](https://github.com/testing-library/jest-dom)
+- [React Testing Library | Testing Library](https://testing-library.com/docs/react-testing-library/intro)
