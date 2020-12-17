@@ -1,21 +1,25 @@
 ## 0. 概要
 
-Next.jsでのユニットテスト環境を整えます。
-使用するライブラリは`Jest`と`React Testing Library`です。
+Next.jsでのユニットテスト環境を整える。
+使用するライブラリは`Jest`と`React Testing Library`。
 
 ## 1. まずは作業用のリポジトリを作成
+
 ```bash
 ❯ yarn create next-app next-test --example=with-typescript
 ```
 
 ## 2. テスト用のライブラリをインストール
 
+※`react-test-renderer`は、`react`のバージョンと合わせる必要があります。
+
 ```bash
-> yarn add -D jest @types/jest babel-jest @testing-library/react @testing-library/jest-dom identity-obj-proxy
+> yarn add -D jest @types/jest babel-jest @testing-library/react @testing-library/jest-dom identity-obj-proxy @testing-library/react-hooks @testing-library/react-hooks react-test-renderer@16.12.0
 ```
 
 ## 3. Jestの設定を作成
-2ファイル作成します。
+
+2ファイル作成する。
 
 - jest.config.jsの作成
 - .babelrcの作成
@@ -52,13 +56,19 @@ module.exports = {
 
 ```
 
-## 4. サンプルとしてButtonコンポーネントを作成
+## 4. サンプルを作成
 
 以下のコミットを参照してください。
 
+Componentサンプル
+**Button**
 https://github.com/hiroshi-kato/next-test/commit/01d8b9a61b856bad11b8139bba24b333a2791763
 
-テストの書き方は以下の記事が大変参考になりました。
+Custom Hookサンプル
+**useInput**
+https://github.com/hiroshi-kato/next-test/commit/4b6d380a2cc896743a1b229d8c52ccc157c782fb
+
+テストの書き方は以下の記事が大変参考になった。
 - [React Testing Libraryの使い方 - Qiita](https://qiita.com/ossan-engineer/items/4757d7457fafd44d2d2f)
 - [React Testing Library の使い方 - Adwaysエンジニアブログ](https://blog.engineer.adways.net/entry/2020/06/12/150000)
 
@@ -88,6 +98,8 @@ Ran all test suites.
 以上。
 
 ## 6. 参考記事
+
+- [React Hooks Testing | Kumasan](https://kumaaaaa.com/react-testing/)
 - [next.js/examples/with-typescript-eslint-jest at master · vercel/next.js · GitHub](https://github.com/vercel/next.js/tree/master/examples/with-typescript-eslint-jest)
 - [Jest · 🃏 Delightful JavaScript Testing](https://jestjs.io/)
 - [GitHub - testing-library/jest-dom: Custom jest matchers to test the state of the DOM](https://github.com/testing-library/jest-dom)
