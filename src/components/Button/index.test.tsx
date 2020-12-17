@@ -1,5 +1,7 @@
-import { fireEvent, render } from 'test/testUtils';
+import { fireEvent, render, cleanup } from 'test/testUtils';
 import Button from './index';
+
+afterEach(cleanup);
 
 describe('Button', () => {
   const handleClick = jest.fn();
